@@ -27,6 +27,16 @@ function insert(value) {
     if (error)
     console.log('3.The solution is: ',error.message);
   });
-
+}
+function insert_Rssi(value, callback) {
+  console.log("insert");
+  var sql = `INSERT INTO PadRssi(Pad_id,Mac,Rssi,Timestamp) VALUES (?,?,?,?)`;
+  var addSqlParams =[value.Pad_id,value.Mac,value.Rssi,value.Timestamp];
+  console.log(addSqlParams);  
+  connection.query(sql, addSqlParams, function (error, results, fields) {
+    if (error) console.log('3.The solution is: ',error.message);
+    callback(error)
+  });
 }
 module.exports.insert = insert;
+module.exports.insert_Rssi = insert_Rssi;
