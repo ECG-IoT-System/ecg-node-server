@@ -84,7 +84,7 @@ app.post("/upload/gateway", function (req, res) {
 
 //Start the server and make it listen for connections on port 8080
 
-let port = process.env.PORT || 8080;
+let port = process.env.NODE_PORT || 8080;
 app.listen(port, function() {
     console.log('server start on port', port)
 });

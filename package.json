@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.3.12",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pei0307/ecg-node-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pei0307/ecg-node-server/issues"
+  },
+  "homepage": "https://github.com/pei0307/ecg-node-server#readme"
+}
