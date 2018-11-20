@@ -7,3 +7,7 @@ const MacMapping = mongoose.model('MacMapping', {
 })
 
 exports.model = MacMapping;
+
+exports.addmapping = function(map_info){
+    MacMapping.insertMany(map_info).then(() => callback());
+}

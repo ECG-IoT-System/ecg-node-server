@@ -14,10 +14,15 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.send('Hello World!');
 })
-
-app.get('/retrieve/:id', function(req, res) {
-    var from = req.query.from;
-    var to = req.query.to;
+//about users
+app.get('/users', function(req, res) {
+    User.find(function(err,users){
+        if(err) res.send(err);
+        res.json(users);
+    });
+})
+//about ecgdatas
+app.get('/users/:id', function(req, res) {
     ECGData.find(req, function(err,ecgdata) {
         if(err) res.send(err);
         res.json(ecgdata);
@@ -33,8 +38,20 @@ app.get('/retrieve/:id', function(req, res) {
 })
 app.post('/upload/:id', function(req,res){
     console.log(req.body);
-    
+});
 
+app.post('/mapping', function(req,res){
+    MacMapping.addmapping(req.body,function(error){
+        if(error) res.send(error);
+        res.send({ status: 200, message: "ok" });
+    })
+    console.log(req.body);
+});
+
+app.post('/createuser',function(req,res){
+    User.save(req.body,function(error){
+        if(error) res.send(error);
+    })
 });
 
 app.post("/upload/rssi", function (req, res) { 
@@ -42,7 +59,6 @@ app.post("/upload/rssi", function (req, res) {
         res.send(error);
     });
     console.log(req.body.mac);
-    //consql.insert(req.body);
 });
 
 // save gateway data
