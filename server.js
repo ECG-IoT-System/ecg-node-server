@@ -1,15 +1,41 @@
 
 //Import the necessary libraries/declare the necessary objects
 var express = require("express");
-var myParser = require("body-parser");
+var bodyParser = require("body-parser");
 var app = express();
 // var consql = require("./connect_sql");
 var ECGData = require("./models/ecgdata")
 var User = require("./models/user")
 var MacMapping = require("./models/macmapping")
 
-app.use(myParser.urlencoded({ extended: true }));
-app.use(myParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.get('/', function(req, res) {
+    res.send('Hello World!');
+})
+
+app.get('/retrieve/:id', function(req, res) {
+    var from = req.query.from;
+    var to = req.query.to;
+    ECGData.find(req, function(err,ecgdata) {
+        if(err) res.send(err);
+        res.json(ecgdata);
+        console.log('retrieve data:'+ecgdata);
+    });
+    // res.send({
+    //     id: req.params.id,
+    //     from: from,
+    //     to:to,
+    //     query: req.query,
+    //     body: req.body
+    // });
+})
+app.post('/upload/:id', function(req,res){
+    console.log(req.body);
+    
+
+});
 
 app.post("/upload/rssi", function (req, res) { 
     consql.insert_Rssi(req.body, function(error) {
@@ -27,6 +53,7 @@ app.post("/upload/gateway", function (req, res) {
 
     var count = data.length;
     var sample_rate = (time[1] - time[0]) / count;
+    console.log(sample_rate)
   
     var body = [];
   
@@ -74,13 +101,14 @@ app.post("/upload/gateway", function (req, res) {
         });
 
         ECGData.save(body, function(error) {
-            res.send({ status: 200, message: "success" });
+            res.send({ status: 200, message: "ok" });
         });
     });
 
     // console.log(req.body.mac);
     // consql.insert(req.body);
 });
+
 
 //Start the server and make it listen for connections on port 8080
 
