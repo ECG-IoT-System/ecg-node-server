@@ -14,11 +14,11 @@ exports.save = function(data, callback) {
 }
 
 //return sorted datas from t1 to t2
-exports.find = function(data, callback) {
+exports.find_intervalecg = function(data, callback) {
     var id = data.params.id;
     var from = data.query.from;
     var to = data.query.to;
-    console.log(id + ' ' + from +' ' + to);
+    console.log('id:'+ id + ' from:' + from +' to:' + to);
     ECGData.find({"user_id":id,'timestamp':{$gt:from},'timestamp':{$lt:to}},
     ['device_id','timestamp','data'],{sort:{time:1}},function(err,ecgdata){
         if(err) console.log('err'+ err);

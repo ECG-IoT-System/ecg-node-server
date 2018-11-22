@@ -6,9 +6,12 @@ const User = mongoose.model('User', {
 })
 
 exports.model = User;
-exports.find = function(callback){
-    User.find({},function(err,users){
-        if(err) console.log('err'+ err);
-        callback(err,users);
+exports.save = function(data, callback) {
+    console.log(data);
+    var new_user = new User(data);
+    new_user.save(function(err,user){
+        console.log(user.id);
+        callback(err,user.id);
     })
+    //User.insertMany(data).then(() => callback());
 }
