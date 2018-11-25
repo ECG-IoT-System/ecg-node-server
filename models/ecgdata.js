@@ -1,4 +1,4 @@
-const mongoose = require('../connect_nosql')
+const mongoose = require('../connect_nosql');
 
 const ECGData = mongoose.model('ECGData', {
     user_id: { type: 'ObjectId', ref: 'User' },
@@ -14,10 +14,7 @@ exports.save = function(data, callback) {
 }
 
 //return sorted datas from t1 to t2
-exports.find_intervalecg = function(data, callback) {
-    var id = data.params.id;
-    var from = data.query.from;
-    var to = data.query.to;
+exports.find_intervalecg = function(id,from,to,callback) {
     console.log('id:'+ id + ' from:' + from +' to:' + to);
     ECGData.find({"user_id":id,'timestamp':{$gt:from},'timestamp':{$lt:to}},
     ['device_id','timestamp','data'],{sort:{time:1}},function(err,ecgdata){

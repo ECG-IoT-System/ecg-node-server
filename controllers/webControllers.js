@@ -12,8 +12,11 @@ app.get('/users', function(req, res) {
 })
 
 //return ecgdatas from t1 to t2 by user_id
-app.get('/users/:id', function(req, res) {
-    ECGData.find_intervalecg(req, function(err,ecgdata) {
+app.get('/ecgdata/:id', function(req, res) {
+    var id = req.params.id;
+    var from = req.query.from;
+    var to = req.query.to;
+    ECGData.find_intervalecg(id,from,to,function(err,ecgdata) {
         if(err) res.send(err);
         res.json(ecgdata);
         console.log('data length:'+ecgdata.length);

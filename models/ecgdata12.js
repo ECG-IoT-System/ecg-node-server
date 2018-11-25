@@ -2,7 +2,7 @@ const mongoose = require('../connect_nosql')
 
 const ECGData12 = mongoose.model('ECGData12', {
     user_id: { type: 'ObjectId', ref: 'User' },
-    time: Number,
+    timestamp: Number,
     L1: Number,
     L2: Number,
     L3: Number,
@@ -18,3 +18,6 @@ const ECGData12 = mongoose.model('ECGData12', {
 });
 
 exports.model = ECGData12;
+exports.save = function(data, callback) {
+    ECGData12.insertMany(data).then(() => callback());
+}

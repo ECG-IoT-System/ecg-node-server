@@ -3,6 +3,7 @@ var app = express.Router();
 var ECGData = require("../models/ecgdata")
 var User = require("../models/user")
 var MacMapping = require("../models/macmapping")
+var Gsensor = require("../models/gsensor")
 
 app.post("/upload/rssi", function (req, res) { 
     consql.insert_Rssi(req.body, function(error) {
@@ -15,13 +16,16 @@ app.post("/upload/rssi", function (req, res) {
 app.post("/upload/gateway", function (req, res) {
     console.log(req.body)
     let data = req.body.data;
+    let gsensor = req.body.gsensor;
     let time = req.body.time;
 
     var count = data.length;
     var sample_rate = (time[1] - time[0]) / count;
-    console.log(sample_rate)
-  
+    var gcount = gsensor.axisX.length;
+    var gsample_rate = (time[1] - time[0]) / gcount;
+
     var body = [];
+    var gbody =[];
   
     // ---- if user or mac mapping not exist --- start
     // user { username: "pei" }
@@ -66,12 +70,27 @@ app.post("/upload/gateway", function (req, res) {
                 timestamp: time[0] + index * sample_rate,
             });
         });
-
+        //console.log(body);
         ECGData.save(body, function(error) {
-            res.send({ status: 200, message: "ok" });
+            if(error) return res.send(error);
         });
-    });
 
+        for (let i=0 ; i < gcount ; i++ ){
+            gbody.push({
+                user_id,
+                device_id,
+                axisX : gsensor.axisX[i],
+                axisY : gsensor.axisY[i],
+                axisZ : gsensor.axisZ[i],
+                timestamp: time[0] + i * gsample_rate,
+          });
+        }    
+        Gsensor.save(gbody, function(error) {
+            if(error) return res.send(error);
+        });
+        return res.send({ status: 200, message: "ok" });
+    });
+    
     // console.log(req.body.mac);
     // consql.insert(req.body);
 });

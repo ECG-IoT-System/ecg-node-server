@@ -26,7 +26,7 @@ app.post('/upload/:id', function(req,res){
     console.log(req.body);
 });
 
-//
+//mac mapping
 app.post('/mapping', function(req,res){
     MacMapping.addmapping(req.body,function(error){
         if(error) res.send(error);
@@ -46,7 +46,6 @@ app.post('/registration',function(req,res){
 
 
 // Start the server and make it listen for connections on port 8080
-
 let port = process.env.NODE_PORT || 8080;
 app.listen(port, function() {
     console.log('server start on port', port)
