@@ -17,7 +17,7 @@ app.get('/ecgdata/:id', function(req, res) {
     var id = req.params.id;
     var from = req.query.from;
     var to = req.query.to;
-    var limitation = req.query.limit || 3;
+    var limitation = req.query.limit || 1024;
     if (to > 0){
         ECGData.find_intervalecg(id,from,to,function(err,ecgdata) {
             if(err) return res.send(err);
