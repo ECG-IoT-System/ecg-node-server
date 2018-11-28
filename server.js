@@ -1,11 +1,10 @@
-
 //Import the necessary libraries/declare the necessary objects
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
 var multer = require("multer");
 var upload = multer();
-// var consql = require("./connect_sql");
+
 var ECGData = require("./models/ecgdata")
 var User = require("./models/user")
 var MacMapping = require("./models/macmapping")
@@ -22,7 +21,25 @@ app.use('/', web_controller)
 app.use('/', transport3_12_controller)
 
 app.get('/', function(req, res) {
-    res.send('Hello World!');
+    // res.send('Hello World!');
+
+    var fs = require('fs')
+    function render(filename, params) {
+        var data = fs.readFileSync(filename, 'utf8');
+        for (var key in params) {
+          data = data.replace('{' + key + '}', params[key]);
+        }
+        return data;
+    }
+
+    User.model.find({}, function (err, users) {
+        if (err) return res.send(err);
+        // Request methods you wish to allow
+        return res.send(render(__dirname + '/views/users/registration.html', {
+            name: users[0].username
+        }));
+    });
+
 })
 app.post('/upload/:id', function(req,res){
     console.log(req.body);

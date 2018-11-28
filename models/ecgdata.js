@@ -10,7 +10,7 @@ const ECGData = mongoose.model('ECGData', {
 exports.model = ECGData;
 
 exports.save = function(data, callback) {
-    ECGData.insertMany(data).then(() => callback());
+    ECGData.insertMany(data).then(callback);
 }
 
 //return sorted datas from t1 to t2

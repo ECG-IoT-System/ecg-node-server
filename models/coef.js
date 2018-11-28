@@ -4,6 +4,7 @@ const mongoose = require('../connect_nosql');
 const Coef = mongoose.model('Coef', {
     user_id: { type: 'ObjectId', ref: 'User' },
     version:Number,
+    description:String,
     F: String,
     K: String,
     HH: String,
@@ -20,4 +21,14 @@ exports.find_all_byuserid = function(id,callback){
         if(err) console.log('err'+ err);
         callback(err,coef);
     })
+}
+
+exports.find_all_coefs = function(callback) {
+    var pipeline =[
+        {"$lookup":{from:"users",localField:"user_id",foreignField:"_id",as:"user_info"}},
+        {"$unwind":"$user_info"}, 
+        {"$project": {"username":"$user_info.username","F":1,"K":1,"HH":1,"version":1}}
+    ]
+    
+    Coef.aggregate(pipeline).then(callback)
 }

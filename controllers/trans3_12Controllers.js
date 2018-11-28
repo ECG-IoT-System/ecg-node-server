@@ -5,43 +5,46 @@ var User = require("../models/user");
 var Ecgdata12 = require("../models/ecgdata12");
 
 
-//upload coef by username or user_id
+// upload coef by username or user_id
+// upload/coef?name=david
+// upload/coef?id=12345
 app.post('/upload/coef', function(req, res) {
     var name = req.query.name;
     var user_id = req.query.id;
     let cdata = req.body;
-    var query =[];
-    if(!user_id){
+
+    new Promise(function(resolve, reject) {
+        query = { 
+            version: cdata.version, 
+            description: cdata.description, 
+            F: cdata.F, 
+            K: cdata.K, 
+            HH: cdata.HH 
+        };
+
+        if (user_id) {
+            query.user_id = user_id;
+            return resolve(query)
+        }
+
         console.log(name);
         User.model.findOne({ username: name }, '_id', function (err, result) {
             if (err) return res.send(err);
             if (!result) return res.send('unknown user');
             console.log('uploadbyname:' + result);
-            query = { user_id: result.id, version: cdata.version, F: cdata.F, K: cdata.K, HH: cdata.HH };
-            console.log(query);
-            var newCoef = new Coef.model(query);
-            newCoef.save(function (err, coef) {
-                if (err) return console.log('upload coef error:' + err);
-                console.log('upload coef success');
-                return res.send(coef.id);
-            })
+            query.user_id = result.id;
+            resolve(query)
         });
-    }
-    else{
-        query = { user_id: user_id, version: cdata.version, F: cdata.F, K: cdata.K, HH: cdata.HH };
+    }).then(function(query) {
         console.log(query);
         var newCoef = new Coef.model(query);
-        newCoef.save(function(err,coef){
+        newCoef.save(function (err, coef) {
             if (err) return console.log('upload coef error:' + err);
             console.log('upload coef success');
             return res.send(coef.id);
         })
-        // Coef.save(query, function (err, result) {
-        //     if (err) return console.log('upload coef error:' + err);
-        //     console.log('upload coef success');
-        //     return res.send(result.id);
-        // });
-    }
+    })
+
 })
 //upload many coefs
 app.post('/upload/coefs',function(req,res){
@@ -53,23 +56,17 @@ app.post('/upload/coefs',function(req,res){
 })
 //return all coefs
 app.get('/coefs',function(req,res){
-    // Coef.model.find({},function(err,result){
-    //     if(err) return console.log('find all coef error:'+ err);
-    //     res.json(result);
-    // })
-    var pipeline =[
-        {"$lookup":{from:"users",localField:"user_id",foreignField:"_id",as:"user_info"}},
-        {"$unwind":"$user_info"}, 
-        {"$project": {"username":"$user_info.username","F":1,"K":1,"HH":1,"version":1}}
-    ]
-    Coef.model.aggregate(pipeline)
-    .then(function(successCallback, errorCallback){
+    Coef.find_all_coefs(function(successCallback, errorCallback){
         if (errorCallback) return res.send(errorCallback);
         res.json(successCallback);
-    });
+    })
 })
 //return coef by user_id and (version)
-app.get('/coef/:id',function(req,res){
+// /coef/:id?v=1
+// /users/:id/coefs       // => [ ]
+// /users/:id/coefs?v=1   // => { }
+// /users/:id/coefs/:id   // => { }
+app.get('/users/:id/coefs',function(req,res){
     var user_id = req.params.id;
     var version = req.query.v;
     if (!version){
@@ -79,14 +76,12 @@ app.get('/coef/:id',function(req,res){
         })
     }
     else{
-
         Coef.model.findOne({$and:[{user_id},{version}]},function (err, result) {
             if(err) return res.send(err);
             console.log(result);
             res.json(result);
         })
     }
-    
 })
 
 //upload ecgdata12 by user_id
@@ -110,5 +105,4 @@ app.post('/upload/ecgdata12/:id',function(req,res){
         res.send({ status: 200, message: "ok" });
     })
 })
-app.get('/ecgdata/')
 module.exports = app;

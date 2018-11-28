@@ -66,4 +66,6 @@ app.post("/upload/gateway", function (req, res) {
     // consql.insert(req.body);
 });
 
+
+
 module.exports = app;
