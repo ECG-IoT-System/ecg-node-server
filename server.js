@@ -3,6 +3,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
+var multer = require("multer");
+var upload = multer();
 // var consql = require("./connect_sql");
 var ECGData = require("./models/ecgdata")
 var User = require("./models/user")
@@ -24,6 +26,10 @@ app.get('/', function(req, res) {
 })
 app.post('/upload/:id', function(req,res){
     console.log(req.body);
+});
+app.post('/', upload.any(),function(req,res,next){
+    console.log(req.files);
+    return res.send(req.files);
 });
 
 //mac mapping
