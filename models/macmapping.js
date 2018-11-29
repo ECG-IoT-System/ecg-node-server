@@ -11,3 +11,7 @@ exports.model = MacMapping;
 exports.addmapping = function(map_info,callback){
     MacMapping.insertMany(map_info).then(() => callback());
 }
+
+exports.findByUserId = function (user_id, callback) {
+    MacMapping.find({ user_id }, callback);
+}

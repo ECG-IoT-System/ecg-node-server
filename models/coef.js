@@ -27,8 +27,7 @@ exports.find_all_coefs = function(callback) {
     var pipeline =[
         {"$lookup":{from:"users",localField:"user_id",foreignField:"_id",as:"user_info"}},
         {"$unwind":"$user_info"}, 
-        {"$project": {"username":"$user_info.username","F":1,"K":1,"HH":1,"version":1}}
+        {"$project": {"username":"$user_info.username","version":1,"description":1,"F":1,"K":1,"HH":1}}
     ]
-    
     Coef.aggregate(pipeline).then(callback)
 }

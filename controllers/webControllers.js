@@ -12,9 +12,8 @@ app.use(function (req, res, next) {
 
 //return all users
 app.get('/users', function (req, res) {
-    User.model.find({}, function (err, users) {
+    User.findAll({}, function (err, users) {
         if (err) return res.send(err);
-        // Request methods you wish to allow
         return res.json(users);
     });
 })

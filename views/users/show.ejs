@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <ul id="list">
+    <%= user.username %>
+  </ul>
+
+  <ul id="list">
+    <% macs.forEach(function(item) { %>
+    <li>
+      <%= item.device_id %> /
+      <%= item.mac %>
+    </li>
+    <% }); %>
+  </ul>
+  
+  <!-- <div id="user">
+    Username:
+    <input type="text" name="username">
+    <input type="submit" value="Submit">
+  </div>  -->
+  
+
+  <!-- <script>
+    document.querySelector('#user input[type="submit"]').onclick = function(){
+      var username = document.querySelector('#user input[name="username"]').value;
+      var lists = document.getElementById("list");
+      console.log(lists)
+
+      axios.post('/registration', {
+        username
+      })
+      .then(function (response) {
+        console.log(response.data);
+
+        var node = document.createElement("li");
+        var textnode = document.createTextNode(response.data._id + "/" + response.data.username);         // Create a text node
+        node.appendChild(textnode);
+        lists.appendChild(node);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    };
+  </script> -->
+  
+</body>
+</html>
+

@@ -28,13 +28,14 @@ app.post('/upload/coef', function(req, res) {
         }
 
         console.log(name);
-        User.model.findOne({ username: name }, '_id', function (err, result) {
+
+        User.findByUsername({ username: name }, function (err, result) {
             if (err) return res.send(err);
             if (!result) return res.send('unknown user');
             console.log('uploadbyname:' + result);
             query.user_id = result.id;
             resolve(query)
-        });
+        })
     }).then(function(query) {
         console.log(query);
         var newCoef = new Coef.model(query);
