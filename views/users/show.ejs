@@ -4,7 +4,8 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <ul id="list">
+  <ul id="title">
+    hello!
     <%= user.username %>
   </ul>
 
@@ -12,19 +13,19 @@
     <% macs.forEach(function(item) { %>
     <li>
       <%= item.device_id %> /
-      <%= item.mac %>
+      <%= item.mac %> /
+      <%= item.status %>
     </li>
     <% }); %>
   </ul>
   
   <div id="macmapping" user_id="<%= user._id %>">
+    Device_id:
+    <input type="text" name="deviceid">
     Mac:
     <input type="text" name="mac">
-    device_id:
-    <input type="text" name="deviceid">
     <input type="submit" value="Submit">
-  </div> 
-  
+  </div>
   
   <script>
     document.querySelector('#macmapping input[type="submit"]').onclick = function(){
