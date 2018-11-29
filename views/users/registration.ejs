@@ -9,7 +9,17 @@
     <li><a href="users/<%= item._id %>">
         <%= item._id %> /
         <%= item.username %> /
-        <%= item.status %></a> </li>
+
+        <% var lasttime = (Date.now() - item.lasttime) / 1000 %>
+        <%= lasttime %> /
+        <%= item.status %> 
+        <!-- <%= lasttime ? "true" : "false" %> -->
+      </a> 
+      / <%= Date.now() %>
+      / <%= item.lasttime %>
+    
+    </li>
+      
     <% }); %>
   </ul>
 

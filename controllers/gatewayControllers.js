@@ -26,10 +26,12 @@ app.post("/upload/gateway", function (req, res) {
 
     var body = [];
     var gbody =[];
-
-    MacMapping.model.findOne({ mac: req.body.mac }, function (err, result) {
+    MacMapping.model.find({ mac: req.body.mac })
+    .limit(1)
+    .sort({$natural:-1})
+    .exec(function (err, result) {
         if (!result) return res.send({ status: 404, message: "Mac Address Not Found" })
-        
+        if (err) return console.log(err);
         let device_id = result.device_id
         let user_id = result.user_id
 
@@ -62,6 +64,7 @@ app.post("/upload/gateway", function (req, res) {
         return res.send({ status: 200, message: "ok" });
     });
     
+    // MacMapping.model.findOne({ mac: req.body.mac },function(){});
     // console.log(req.body.mac);
     // consql.insert(req.body);
 });

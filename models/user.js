@@ -1,5 +1,4 @@
 const mongoose = require('../connect_nosql')
-
 const User = mongoose.model('User', {
     username: String,
     // ...
@@ -22,10 +21,12 @@ exports.save = function (data, callback) {
 exports.findAll = function (data, callback) {
     var pipeline =[
         {"$lookup":{from:"ecgdatas",localField:"_id",foreignField:"user_id",as:"ecg_datas"}},
-        {"$addFields": {"ecg_data": { $arrayElemAt: [ "$ecg_datas", -1 ] }}}, //return last ecgdata
-        {"$project":{username:1,status:{ $gte:["$ecg_data.timestamp",Date.now()-120000]}}} 
+        {"$unwind":{"path":"$ecg_datas","preserveNullAndEmptyArrays": true}},
+        {"$group":{_id:{user_id:"$_id",username:"$username"},lasttime: {$last: "$ecg_datas.timestamp" }}},
+        {"$project":{_id:0,_id:"$_id.user_id",username:"$_id.username",lasttime:1,status:{ $gte:["$lasttime",Date.now()-120000]}}} 
     ]
     User.aggregate(pipeline).exec(function(err, users) {
+        console.log(users);
         callback(err, users);
         });
     // User.find(data, callback);

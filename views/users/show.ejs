@@ -17,36 +17,34 @@
     <% }); %>
   </ul>
   
-  <!-- <div id="user">
-    Username:
-    <input type="text" name="username">
+  <div id="macmapping" user_id="<%= user._id %>">
+    Mac:
+    <input type="text" name="mac">
+    device_id:
+    <input type="text" name="deviceid">
     <input type="submit" value="Submit">
-  </div>  -->
+  </div> 
   
-
-  <!-- <script>
-    document.querySelector('#user input[type="submit"]').onclick = function(){
-      var username = document.querySelector('#user input[name="username"]').value;
-      var lists = document.getElementById("list");
-      console.log(lists)
-
-      axios.post('/registration', {
-        username
+  
+  <script>
+    document.querySelector('#macmapping input[type="submit"]').onclick = function(){
+      var device_id = document.querySelector('#macmapping input[name="deviceid"]').value;
+      var mac = document.querySelector('#macmapping input[name="mac"]').value;
+      var user_id = document.getElementById("macmapping").getAttribute('user_id');
+      axios.post('/macmapping', {
+        user_id,
+        mac,
+        device_id
       })
       .then(function (response) {
         console.log(response.data);
-
-        var node = document.createElement("li");
-        var textnode = document.createTextNode(response.data._id + "/" + response.data.username);         // Create a text node
-        node.appendChild(textnode);
-        lists.appendChild(node);
       })
       .catch(function (error) {
         console.log(error);
       });
 
     };
-  </script> -->
+  </script>
   
 </body>
 </html>

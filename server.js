@@ -31,7 +31,8 @@ app.get('/users.html', function (req, res) {
 })
 
 app.get('/users/:id', function (req, res) {
-    //console.log(req.params.id)
+    console.log(req.params.id)
+
     new Promise(function(resolve, reject) {
         User.findById({ _id: req.params.id }, function (err, user) {
             if (err) return res.send(err);
@@ -59,7 +60,8 @@ app.post('/', upload.any(), function (req, res, next) {
 });
 
 //mac mapping
-app.post('/mapping', function (req, res) {
+app.post('/macmapping', function (req, res) {
+    console.log(req.body);
     MacMapping.addmapping(req.body, function (error) {
         if (error) res.send(error);
         res.send({ status: 200, message: "ok" });
