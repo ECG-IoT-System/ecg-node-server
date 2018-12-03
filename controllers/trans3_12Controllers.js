@@ -27,21 +27,21 @@ app.post('/upload/coef', function(req, res) {
             return resolve(query)
         }
 
-        console.log(name);
+        //console.log(name);
 
         User.findByUsername({ username: name }, function (err, result) {
             if (err) return res.send(err);
             if (!result) return res.send('unknown user');
-            console.log('uploadbyname:' + result);
+            //console.log('uploadbyname:' + result);
             query.user_id = result.id;
             resolve(query)
         })
     }).then(function(query) {
-        console.log(query);
+        //console.log(query);
         var newCoef = new Coef.model(query);
         newCoef.save(function (err, coef) {
             if (err) return console.log('upload coef error:' + err);
-            console.log('upload coef success');
+            //console.log('upload coef success');
             return res.send(coef.id);
         })
     })
@@ -51,7 +51,7 @@ app.post('/upload/coef', function(req, res) {
 app.post('/upload/coefs',function(req,res){
     Coef.save(req.body,function(err){
         if(err) return res.send(err);
-        console.log('upload coef success');
+        //console.log('upload coef success');
         res.send({ status: 200, message: "ok" });
     })
 })
@@ -73,14 +73,14 @@ app.get('/users/:id/coefs',function(req,res){
     if (!version){
         Coef.find_all_byuserid(user_id,function(err,result){
             if(err) return console.log('find coef error:'+ err);
-            res.json(result);
+            return res.json(result);
         })
     }
     else{
         Coef.model.findOne({$and:[{user_id},{version}]},function (err, result) {
             if(err) return res.send(err);
-            console.log(result);
-            res.json(result);
+            //console.log(result);
+            return res.json(result);
         })
     }
 })
@@ -103,7 +103,7 @@ app.post('/upload/ecgdata12/:id',function(req,res){
     //console.log(body);
     Ecgdata12.save(body,function(err){
         if(err) return res.send(err);
-        res.send({ status: 200, message: "ok" });
+        return res.send({ status: 200, message: "ok" });
     })
 })
 module.exports = app;

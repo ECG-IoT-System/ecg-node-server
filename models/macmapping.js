@@ -11,7 +11,7 @@ exports.model = MacMapping;
 
 exports.addmapping = function(map_info,callback){
     MacMapping.updateMany({mac:map_info.mac},{$set:{status:false}},function(err,result){
-        console.log(result);
+        //console.log(result);
         map_info.status = true;
         new MacMapping(map_info).save(callback);
     });

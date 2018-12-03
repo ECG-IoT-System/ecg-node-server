@@ -13,6 +13,12 @@ var gateway_controller = require('./controllers/gatewayControllers')
 var web_controller = require('./controllers/webControllers')
 var transport3_12_controller = require('./controllers/trans3_12Controllers')
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
+
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,6 +57,7 @@ app.get('/users/:id', function (req, res) {
 })
 
 
+
 app.post('/upload/:id', function (req, res) {
     console.log(req.body);
 });
@@ -71,6 +78,7 @@ app.post('/macmapping', function (req, res) {
 
 // user register
 app.post('/registration', function (req, res) {
+    console.log(req.body);
     User.save(req.body, function (error, user) {
         if (error) return res.send(error);
         res.send(user);

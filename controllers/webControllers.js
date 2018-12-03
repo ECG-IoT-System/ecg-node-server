@@ -3,6 +3,7 @@ var app = express.Router();
 var User = require("../models/user");
 var ECGData = require("../models/ecgdata");
 var ECGData12 = require("../models/ecgdata12");
+var MacMapping = require("../models/macmapping");
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -10,9 +11,30 @@ app.use(function (req, res, next) {
     next();
 })
 
+app.get('/user/:id', function (req, res) {
+    console.log(req.params.id)
+
+    new Promise(function(resolve, reject) {
+        User.findById({ _id: req.params.id }, function (err, user) {
+            if (err) return res.send(err);
+            //console.log(user)
+            resolve(user)
+        })
+    })
+    .then(function(user) {
+        MacMapping.findByUserId(user.id, function(err, macs){
+            if (err) return res.send(err);
+            //console.log(macs)
+            return res.render(__dirname + '/views/users/show', { user, macs })
+        })
+    })
+    
+})
+
 //return all users
 app.get('/users', function (req, res) {
     User.findAll({}, function (err, users) {
+        console.log('user');
         if (err) return res.send(err);
         return res.json(users);
     });
@@ -40,7 +62,7 @@ function findEcgdataByUserId(req, res) {
     
     function ecgDataCallback(err, ecgdata) {
         if (err) return res.json(err);
-        console.log('data length:' + ecgdata.length);
+        //console.log('data length:' + ecgdata.length);
         return res.json(ecgdata);
     }
 }
@@ -63,9 +85,19 @@ app.get('/users/:id/ecgdata12', function (req, res) {
 
     function ecgData12Callback(err, ecgdata12) {
         if (err) return res.json(err);
-        console.log('data12 length:' + ecgdata12.length);
+        //console.log('data12 length:' + ecgdata12.length);
         return res.json(ecgdata12);
     }
+})
+//return ecgdata12s from t1 to t2 by user_id
+app.get('/user/:id/macs', function (req, res) {
+    var user_id = req.params.id;
+    MacMapping.findByUserId(user_id, function(err, macs){
+        if (err) return res.send(err);
+        //console.log(macs)
+        return res.json(macs);
+    })
+    
 })
 
 module.exports = app;

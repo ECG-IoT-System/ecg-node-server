@@ -26,7 +26,7 @@ exports.findAll = function (data, callback) {
         {"$project":{_id:0,_id:"$_id.user_id",username:"$_id.username",lasttime:1,status:{ $gte:["$lasttime",Date.now()-120000]}}} 
     ]
     User.aggregate(pipeline).exec(function(err, users) {
-        console.log(users);
+        //console.log(users);
         callback(err, users);
         });
     // User.find(data, callback);

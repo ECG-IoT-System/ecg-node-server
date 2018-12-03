@@ -5,6 +5,7 @@ const ECGData = mongoose.model('ECGData', {
     device_id: Number,
     data: Number,
     timestamp: Number,
+    tags: { timestamp: [Number], index: true }
 });
 
 exports.model = ECGData;
@@ -23,7 +24,7 @@ exports.find_intervalecg = function(id,from,to,callback) {
     // })
     var query = ECGData.find({"user_id":id,'timestamp':{$gt:from},'timestamp':{$lt:to}})
     .select(['device_id','timestamp','data'])
-    .sort({time:1});
+    //.sort({time:1});
     query.exec(function(err,ecgdata){
         if(err) console.log('err'+ err);
         callback(err,ecgdata);
@@ -34,7 +35,7 @@ exports.find_intervalecg = function(id,from,to,callback) {
 exports.find_limitecg = function(id,from,limitation,callback) {
     var query = ECGData.find({"user_id":id,'timestamp':{$gt:from}})
     .select(['device_id','timestamp','data'])
-    .sort({time:1})
+    //.sort({time:1})
     .limit(Number(limitation));
     query.exec(function(err,ecgdata){
         //if(err) console.log('err'+ err);

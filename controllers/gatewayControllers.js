@@ -9,12 +9,12 @@ app.post("/upload/rssi", function (req, res) {
     consql.insert_Rssi(req.body, function(error) {
         res.send(error);
     });
-    console.log(req.body.mac);
+    //console.log(req.body.mac);
 });
 
 // save gateway data
 app.post("/upload/gateway", function (req, res) {
-    console.log(req.body)
+    //console.log(req.body)
     let data = req.body.data;
     let gsensor = req.body.gsensor;
     let time = req.body.time;
@@ -33,7 +33,7 @@ app.post("/upload/gateway", function (req, res) {
         if (err) return console.log(err);
         let device_id = result.device_id
         let user_id = result.user_id
-        console.log(result);
+        //console.log(result);
         data.forEach((data, index) => {
             body.push({
                 user_id,
