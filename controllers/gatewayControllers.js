@@ -60,6 +60,10 @@ app.post("/upload/gateway", function (req, res) {
         Gsensor.save(gbody, function(error) {
             if(error) return res.send(error);
         });
+
+        User.update_usertime(user_id,time[1],function(error){
+            if(error) return res.send(error);
+        })
         return res.send({ status: 200, message: "ok" });
     });
     // console.log(req.body.mac);

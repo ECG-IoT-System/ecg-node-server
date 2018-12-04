@@ -5,7 +5,7 @@ const ECGData = mongoose.model('ECGData', {
     device_id: Number,
     data: Number,
     timestamp: Number,
-    tags: { timestamp: [Number], index: true }
+    //tags: { timestamp: [Number], index: true }
 });
 
 exports.model = ECGData;
@@ -22,7 +22,8 @@ exports.find_intervalecg = function(id,from,to,callback) {
     //     if(err) console.log('err'+ err);
     //     callback(err,ecgdata);
     // })
-    var query = ECGData.find({"user_id":id,'timestamp':{$gt:from},'timestamp':{$lt:to}})
+    var query = ECGData.find({"user_id":id,'timestamp':{$gt:from,$lt:to}})
+    //var query = ECGData.find({"user_id":id,'timestamp':{$gt:from},'timestamp':{$lt:to}})
     .select(['device_id','timestamp','data'])
     //.sort({time:1});
     query.exec(function(err,ecgdata){
