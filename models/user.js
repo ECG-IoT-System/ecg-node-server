@@ -3,6 +3,8 @@ const User = mongoose.model('User', {
     username: String,
     // ...
     lasttime: Number,
+    lastesttime_12L: Number,
+    lastesttime_af: Number,
 
 })
 
@@ -23,7 +25,7 @@ exports.save = function (data, callback) {
 
 exports.findAll = function (data, callback) {
     var pipeline = [
-        {$project : { _id: 0, username : 1 , lasttime : 1 ,status:{ $gte:['$lasttime',Date.now()-120000]}} }
+        {$project : { _id: 1, username : 1 , lasttime : 1 ,status:{ $gte:['$lasttime',Date.now()-120000]}} }
     ]
     User.aggregate(pipeline).exec(function (err, users) {
         //console.log(users);
@@ -42,4 +44,8 @@ exports.findByUsername = function (username, callback) {
 
 exports.update_usertime = function (user_id, time, callback) {
     User.updateOne({ _id: user_id, lasttime: { $lte: time } }, { $set: { lasttime: time } }, callback);
+}
+
+exports.update_usertime_12 = function (user_id, time, callback) {
+    User.updateOne({ _id: user_id, lasttime_12L: { $lte: time } }, { $set: { lasttime_12L: time } }, callback);
 }

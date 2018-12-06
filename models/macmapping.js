@@ -4,6 +4,7 @@ const MacMapping = mongoose.model('MacMapping', {
     user_id: { type: 'ObjectId', ref: 'User' },
     device_id: Number,
     mac: String,
+    description:String,
     status:Boolean,
 })
 

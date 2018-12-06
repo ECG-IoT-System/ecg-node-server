@@ -24,18 +24,23 @@
     <input type="text" name="deviceid">
     Mac:
     <input type="text" name="mac">
+    Description:
+    <input type="text" name="description">
     <input type="submit" value="Submit">
+    
   </div>
   
   <script>
     document.querySelector('#macmapping input[type="submit"]').onclick = function(){
       var device_id = document.querySelector('#macmapping input[name="deviceid"]').value;
       var mac = document.querySelector('#macmapping input[name="mac"]').value;
+      var description = document.querySelector('#macmapping input[name="description"]').value;
       var user_id = document.getElementById("macmapping").getAttribute('user_id');
       axios.post('/macmapping', {
         user_id,
         mac,
-        device_id
+        device_id,
+        description
       })
       .then(function (response) {
         console.log(response.data);

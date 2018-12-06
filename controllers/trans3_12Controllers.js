@@ -105,5 +105,8 @@ app.post('/upload/ecgdata12/:id',function(req,res){
         if(err) return res.send(err);
         return res.send({ status: 200, message: "ok" });
     })
+    User.update_usertime_12L(user_id,timestamp,function(error){
+        if(error) return res.send(error);
+    })
 })
 module.exports = app;

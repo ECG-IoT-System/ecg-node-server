@@ -99,5 +99,15 @@ app.get('/user/:id/macs', function (req, res) {
     })
     
 })
+//update afstatus
+app.put('/user/:id/afstat', function (req, res) {
+    var user_id = req.params.id;
+    var from = req.query.from;
+    var to = req.query.to;
+    var afstat = req.query.afstat;
+    console.log(from," ",to," ",afstat);
+    return res.send("not yet!");
+    
+})
 
 module.exports = app;
